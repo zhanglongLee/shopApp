@@ -1,0 +1,71 @@
+<template>
+	<view class="hot">
+		<commodity :dataList="hotList" bigW="250rpx" bigH="250rpx"></commodity>
+	</view>
+</template>
+
+<script>
+	import commodity from '../common/commodity.vue'
+	export default{
+		data(){
+			return{
+				hotList:[
+					{
+						id:1,
+						imgUrl:"../../static/img/hot1.jpg",
+						name:"春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款",
+						pprice:"299",
+						oprice:"655",
+						discount:"5.2"
+					},
+					{
+						id:2,
+						imgUrl:"../../static/img/hot2.jpg",
+						name:"连衣裙爆款连衣裙爆款连衣裙爆款连衣裙爆款连衣裙爆款连衣裙爆款",
+						pprice:"199",
+						oprice:"499",
+						discount:"5.2"
+					},
+					{
+						id:3,
+						imgUrl:"../../static/img/hot3.jpg",
+						name:"冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款",
+						pprice:"199",
+						oprice:"499",
+						discount:"5.2"
+					},
+					{
+						id:1,
+						imgUrl:"../../static/img/hot1.jpg",
+						name:"春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款春节爆款",
+						pprice:"299",
+						oprice:"655",
+						discount:"5.2"
+					},
+					{
+						id:2,
+						imgUrl:"../../static/img/hot2.jpg",
+						name:"连衣裙爆款连衣裙爆款连衣裙爆款连衣裙爆款连衣裙爆款连衣裙爆款",
+						pprice:"199",
+						oprice:"499",
+						discount:"5.2"
+					},
+					{
+						id:3,
+						imgUrl:"../../static/img/hot3.jpg",
+						name:"冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款冬季爆款",
+						pprice:"199",
+						oprice:"499",
+						discount:"5.2"
+					}
+				]
+			}
+		},
+		components:{
+			commodity
+		}
+	}
+</script>
+
+<style>
+</style>
