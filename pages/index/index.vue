@@ -47,6 +47,7 @@
 </template>
 
 <script>
+	import config from '../../config.js'
 	import Header from '@/components/common/Header.vue'
 	import Shop from '@/components/index/Shop.vue'
 	import Hot from '@/components/index/Hot.vue'
@@ -83,6 +84,15 @@
 			Icons,
 			Hot,
 			Shop
+		},
+		onLoad() {
+			uni.request({
+				url:config.requestName+"/api/index_list/data",
+				dataType:'get',
+				success: (res) => {
+					console.log(res)
+				}
+			})
 		},
 		onReady() {
 			let view = uni.createSelectorQuery().select(".home-data");
