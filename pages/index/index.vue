@@ -1,15 +1,11 @@
 <template>
 	<view class="content">
-		<!-- #ifdef MP-WEIXIN -->
-		<Header></Header>
-		<!-- #endif -->
-		
 		<!-- 顶部滑动导航 -->
 		<scroll-view scroll-x="true" class="scroll-content" :scroll-into-view="scrollIntoIndex">
 			<view 
 				:id="'top'+index"
 				class="scroll-item" 
-				v-for="(item,index) in scrollList" 
+				v-for="(item,index) in topBar" 
 				:key="index"
 				@click="changeBar(index)"
 			>
@@ -18,25 +14,29 @@
 		</scroll-view>
 		<swiper :current="scrollIndex" @change="swiperChange" :style="{height:clientHeight}">
 			<swiper-item
-				v-for="(item,index) in scrollList"
+				v-for="(item,index) in newTopBar"
 				:key="index"
 			>
-				<view class="home-data">
-					<!-- <IndexSwiper></IndexSwiper>
-					<Recommend></Recommend>
-					<Card carName="猜你喜欢">
-						<commodityList></commodityList>
-					</Card> -->
+				<scroll-view scroll-y="true" :style="{height:clientHeight}">
 					
-					<Banner></Banner>
+					<block v-for="(k,i) in item.data" :key="i">
+						<IndexSwiper v-if="k.type=='swiperList'" :dataList="k.data"></IndexSwiper>
+						<Recommend v-if="k.type=='recommendList'" :dataList="k.data"></Recommend>
+						<Card carName="猜你喜欢" v-if="k.type=='commodityList'">
+							<commodityList :dataList="k.data"></commodityList>
+						</Card>
+					</block>
+					
+					
+					<!-- <Banner></Banner>
 					<Icons></Icons>
 					<Card carName="热销爆品">
 						<Hot></Hot>
 					</Card>
 					<Card carName="推荐店铺">
 						<Shop></Shop>
-					</Card>
-				</view>
+					</Card> -->
+				</scroll-view>
 			</swiper-item>
 		</swiper>
 		<!-- 推荐模板 -->
@@ -63,15 +63,8 @@
 				clientHeight:0,
 				scrollIntoIndex:"top0",
 				scrollIndex:0,
-				scrollList:[
-					{name:"推荐"},
-					{name:"运动户外"},
-					{name:"服饰内衣"},
-					{name:"鞋靴箱包"},
-					{name:"美妆个护"},
-					{name:"家具数码"},
-					{name:"食品婴儿"},
-				]
+				topBar:[],
+				newTopBar:[]
 			}
 		},
 		components:{
@@ -86,27 +79,54 @@
 			Shop
 		},
 		onLoad() {
-			uni.request({
-				url:config.requestName+"/api/index_list/data",
-				dataType:'get',
+			this.__init();
+		},
+		onReady() {
+			uni.getSystemInfo({
 				success: (res) => {
-					console.log(res)
+					// 可视区高度 - 顶部滑动导航高度
+					this.clientHeight = res.windowHeight - uni.upx2px(80) + 'px';
 				}
 			})
 		},
-		onReady() {
-			let view = uni.createSelectorQuery().select(".home-data");
-			view.boundingClientRect(data => {
-				this.clientHeight = Number(data.height) + 'px';
-			}).exec();
-		},
 		methods: {
+			// 首页请求的数据
+			__init(){
+				uni.request({
+					url:config.requestName+"/api/index_list/data",
+					dataType:'get',
+					success: (res) => {
+						if(JSON.parse(res.data).code===0){
+							let data = JSON.parse(res.data).data;
+							this.topBar = data.topBar;
+							this.newTopBar = this.initData(data);
+						}
+					}
+				})
+			},
+			// 添加数据
+			initData(res){
+				let arr = [];
+				for(var i=0;i<this.topBar.length;i++){
+					let obj={
+						data:[]
+					}
+					// 获取首次数据
+					if(i===0){
+						obj.data = res.data;
+					}
+					arr.push(obj);
+				}
+				return arr;
+			},
+			// 点击导航栏
 			changeBar(index){
 				if(this.scrollIndex===index){
 					return
 				}
 				this.scrollIndex = index;
 			},
+			// 滑动切换
 			swiperChange(e){
 				this.scrollIndex = e.detail.current;
 				this.scrollIntoIndex = 'top' + e.detail.current;
@@ -116,6 +136,9 @@
 </script>
 
 <style scoped>
+	.demo1{
+		background: red;
+	}
 .scroll-content{
 	width: 100%;
 	height: 80rpx;

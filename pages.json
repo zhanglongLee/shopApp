@@ -5,7 +5,7 @@
 			"style": {
 				"navigationBarTitleText": "百年奥来",
 				"navigationBarBackgroundColor":"#FFFFFF",
-				"navigationStyle":"custom",
+				// "navigationStyle":"custom",
 				"app-plus":{
 					"scrollIndicator":"none",
 					"titleNView":{

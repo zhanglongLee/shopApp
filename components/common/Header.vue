@@ -1,7 +1,7 @@
 <template>
 	<view class="header">
 		<!-- 头部 -->
-		<view class="wx-nav" :style="{'height':globalData.menuHeight+'rpx','marginTop':globalData.menuTop+'rpx'}">
+		<view class="wx-nav" :style="{'height':globalData.menuHeight+'px','marginTop':globalData.menuTop+'px'}">
 			<view class="iconfont icon-fangdajing"></view>
 			<text>百年奥来</text>
 			<view class="iconfont icon-xiaoxi"></view>
@@ -26,8 +26,12 @@
 			const systemInfo = uni.getSystemInfoSync();
 			// 胶囊按钮位置信息
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect()||"";
-			this.globalData.menuTop = menuButtonInfo.top*2;
-			this.globalData.menuHeight = menuButtonInfo.height*2;
+			this.globalData.menuTop = menuButtonInfo.top;
+			this.globalData.menuHeight = menuButtonInfo.height;
+			uni.setStorage({
+				key: 'globalData',
+				data: JSON.stringify(this.globalData),
+			});
 			console.log(this.globalData)
 		}
 	}
